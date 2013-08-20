@@ -34,7 +34,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 
 public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener,
-	GoogleMap.OnCameraChangeListener, GoogleMap.OnMarkerDragListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.InfoWindowAdapter
+	GoogleMap.OnCameraChangeListener, GoogleMap.OnMarkerDragListener, GoogleMap.OnInfoWindowClickListener, GoogleMap.InfoWindowAdapter, , GoogleMap.OnMapLongClickListener
 {
 	private static final String TAG = "TiUIMapView";
 	private GoogleMap map;
@@ -80,6 +80,7 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 		processPreloadRoutes();
 		map.setOnMarkerClickListener(this);
 		map.setOnMapClickListener(this);
+		map.setOnMapLongClickListener(this);
 		map.setOnCameraChangeListener(this);
 		map.setOnMarkerDragListener(this);
 		map.setOnInfoWindowClickListener(this);
@@ -583,5 +584,13 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public void onMapLongClick(LatLng point) {
+		KrollDict d = new KrollDict();
+		d.put(TiC.PROPERTY_LATITUDE, point.latitude);
+		d.put(TiC.PROPERTY_LONGITUDE, point.longitude);
+		proxy.fireEvent(TiC.EVENT_LONGPRESS, d);
 	}
 }
